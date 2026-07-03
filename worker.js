@@ -34,7 +34,7 @@ export default {
 async function handleMCP(body, apiKey) {
   const { id, method, params } = body;
   if (method === "initialize") {
-    return { jsonrpc: "2.0", id, result: { protocolVersion: "2024-11-05", capabilities: { tools: {} }, serverInfo: { name: "holded-mcp", version: "1.0.0" } } };
+    return { jsonrpc: "2.0", id, result: { protocolVersion: "2024-11-05", capabilities: { tools: {} }, serverInfo: { name: "holded-mcp", version: "2.0.0" } } };
   }
   if (method === "notifications/initialized") { return { jsonrpc: "2.0", id, result: {} }; }
   if (method === "tools/list") {
@@ -54,15 +54,15 @@ async function handleMCP(body, apiKey) {
   return { jsonrpc: "2.0", id, error: { code: -32601, message: "Metodo no encontrado" } };
 }
 async function executeTool(name, args, apiKey) {
-  const base = "https://api.holded.com/api";
+  const base = "https://api.holded.com";
   const headers = { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" };
   let endpoint;
   switch (name) {
-    case "holded_get_invoices": endpoint = "/invoicing/v1/documents/invoice?page=" + (args.page || 1); break;
-    case "holded_get_contacts": endpoint = "/crm/v1/contacts?page=" + (args.page || 1); break;
-    case "holded_get_warehouses": endpoint = "/warehouse/v1/warehouses"; break;
-    case "holded_get_accounting": endpoint = "/accounting/v1/dailyledger?page=" + (args.page || 1); break;
-    case "holded_get_expenses": endpoint = "/invoicing/v1/documents/purchase?page=" + (args.page || 1); break;
+    case "holded_get_invoices": endpoint = "/api/v2/invoices?page=" + (args.page || 1); break;
+    case "holded_get_contacts": endpoint = "/api/v2/contacts?page=" + (args.page || 1); break;
+    case "holded_get_warehouses": endpoint = "/api/v2/projects?page=" + (args.page || 1); break;
+    case "holded_get_accounting": endpoint = "/api/v2/ledger-entries?page=" + (args.page || 1); break;
+    case "holded_get_expenses": endpoint = "/api/v2/purchases?page=" + (args.page || 1); break;
     default: return { error: "Herramienta desconocida: " + name };
   }
   try {
