@@ -55,7 +55,7 @@ async function handleMCP(body, apiKey) {
 }
 async function executeTool(name, args, apiKey) {
   const base = 'https://api.holded.com/api';
-  const headers = { 'key': apiKey, 'Content-Type': 'application/json' };
+  const headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
   let endpoint;
   switch (name) {
     case 'holded_get_invoices': endpoint = '/invoicing/v1/documents/invoice?page=' + (args.page || 1); break;
